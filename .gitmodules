@@ -1,0 +1,4 @@
+[submodule "vendor/yah264"]
+	path = vendor/yah264
+	url = https://github.com/terranvigil/yah264.git
+	branch = main

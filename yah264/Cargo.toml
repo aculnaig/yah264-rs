@@ -1,0 +1,10 @@
+[package]
+name = "yah264"
+description = "Safe Rust wrapper for the yah264 H.264 encoder"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+yah264-sys = { path = "../yah264-sys" }
+zerocopy.workspace = true

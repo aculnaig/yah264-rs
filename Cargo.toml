@@ -1,0 +1,15 @@
+[workspace]
+members = ["yah264-sys", "yah264", "av-yah264"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+cc = "1"
+bindgen = "0.69"
+zerocopy = { version = "0.8", features = ["derive"] }
+av-codec = { git = "https://github.com/rust-av/rust-av", rev = "d44bb083ffc543d80397c8244f2e8c534f609308" }
+av-data = "0.4.4"

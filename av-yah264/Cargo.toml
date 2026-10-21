@@ -1,0 +1,11 @@
+[package]
+name = "av-yah264"
+description = "rust-av encoder adapter for yah264"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+av-codec.workspace = true
+av-data.workspace = true
+yah264 = { path = "../yah264" }
