@@ -58,7 +58,6 @@ fn main() {
         .define("Y264_HAVE_SSE4", "0")
         .define("Y264_HAVE_AVX2", "0")
         .define("Y264_HAVE_AVX512", "0")
-        .define("Y264_HAVE_GPU", "0")
         .define("Y264_HAVE_VT", "0")
         .flag_if_supported("-pthread");
     for source in sources {

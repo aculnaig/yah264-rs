@@ -9,3 +9,4 @@ license.workspace = true
 av-codec.workspace = true
 av-data.workspace = true
 yah264 = { path = "../yah264" }
+yah264-sys = { path = "../yah264-sys" }
