@@ -67,13 +67,23 @@ fn main() {
 
     println!("cargo:rustc-link-lib=pthread");
     println!("cargo:rustc-link-lib=m");
+    println!("cargo:rerun-if-changed=wrapper.h");
     println!("cargo:rerun-if-changed={}", include.join("yah264.h").display());
     println!("cargo:rerun-if-changed={}", upstream.join("meson.build").display());
 
     let bindings = bindgen::Builder::default()
-        .header(include.join("yah264.h").to_string_lossy())
+        .header("wrapper.h")
         .clang_arg(format!("-I{}", include.display()))
+        .clang_arg(format!("-I{}", src.display()))
+        .clang_arg("-std=c11")
+        .clang_arg("-D_GNU_SOURCE")
         .clang_arg("-DY264_BIT_DEPTH=8")
+        .clang_arg("-DY264_HAVE_NEON=0")
+        .clang_arg("-DY264_HAVE_SVE=0")
+        .clang_arg("-DY264_HAVE_SSE4=0")
+        .clang_arg("-DY264_HAVE_AVX2=0")
+        .clang_arg("-DY264_HAVE_AVX512=0")
+        .clang_arg("-DY264_HAVE_VT=0")
         .allowlist_function("yah264_.*")
         .allowlist_type("yah264_.*")
         .allowlist_var("YAH264_.*")
