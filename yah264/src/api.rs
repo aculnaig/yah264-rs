@@ -155,27 +155,26 @@ pub mod low_level_api {
 
     impl Param {
         pub fn new() -> Param {
-            let mut par: mem::MaybeUninit<yah264_param_t> = mem::MaybeUninit::uninit();
+            let mut par: yah264_param_t = unsafe {
+                std::mem::zeroed()
+            };
 
             unsafe {
-                yah264_param_default(par.as_mut_ptr());
+                yah264_param_default(&mut par);
             };
 
             let param = Param {
-                par: unsafe {
-                    par.assume_init()
-                },
+                par,
             };
 
             param
         }
 
-        pub fn default_preset<'a, 'b, Oa, Ob>(preset: Oa, _tune: Ob) -> Result<Param, &'static str>
+        pub fn default_preset<'a, 'b, Oa, Ob>(mut self, preset: Oa, _tune: Ob) -> Result<Param, &'static str>
         where
             Oa: Into<Option<&'a str>>,
             Ob: Into<Option<&'b str>>,
         {
-            let mut par: mem::MaybeUninit<yah264_param_t> = mem::MaybeUninit::uninit();
             let t = _tune
                 .into()
                 .map_or_else(|| None, |v| Some(CString::new(v).unwrap()));
@@ -186,13 +185,13 @@ pub mod low_level_api {
             let _c_tune = t.as_ref().map_or_else(null, |v| v.as_ptr() as *const i8);
             let c_preset = p.as_ref().map_or_else(null, |v| v.as_ptr() as *const i8);
 
-            match unsafe { yah264_param_apply_preset(par.as_mut_ptr(), c_preset) } {
+            let _ = match unsafe { yah264_param_apply_preset(&mut self.par, c_preset) } {
                 -1 => Err("Invalid Argument"),
-                0 => Ok(Param {
-                    par: unsafe { par.assume_init() },
-                }),
+                0 => Ok(()),
                 _ => Err("Unexpected"),
-            }
+            };
+
+            Ok(self)
         }
 
         pub fn apply_profile(mut self, _profile: &str) -> Result<Param, &'static str> {
